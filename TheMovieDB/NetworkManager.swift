@@ -21,6 +21,8 @@ class NetworkManager: NSObject {
     private let cache = NSCache<NSString, UIImage>()
     
     static let upcoming = "https://api.themoviedb.org/3/movie/upcoming?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES&page=1"
+    static let nowPlaying = "https://api.themoviedb.org/3/movie/now_playing?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES&page=1"
+    static let trending = "https://api.themoviedb.org/3/trending/movie/day?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES"
     
     func getListOfUpcomingMovies(completion: @escaping (Result<[DataMovie], APError>) -> Void)  {
         guard let url = URL(string: NetworkManager.upcoming) else {
@@ -55,6 +57,75 @@ class NetworkManager: NSObject {
             }
         }.resume()
     }
+    
+    func getMoviesNowPlaying(completion: @escaping (Result<[DataMovie], APError>) -> Void)  {
+        guard let url = URL(string: NetworkManager.nowPlaying) else {
+            completion(.failure(.invalidURL))
+            
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url){ data, response, error in
+            if let _ = error{
+                completion(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else{
+                completion(.failure(.invalidResponse))
+                return
+            }
+            
+            guard let data = data else{
+                completion(.failure(.invalidData))
+                return
+                
+            }
+            
+            do{
+                let decodedResponse = try JSONDecoder().decode(MovieDataModel.self, from: data)
+                completion(.success(decodedResponse.results))
+            }catch{
+                print("Debug: error \(error.localizedDescription)")
+                completion(.failure(.decodingError))
+            }
+        }.resume()
+    }
+    
+    func getMoviesTrending(completion: @escaping (Result<[DataMovie], APError>) -> Void)  {
+        guard let url = URL(string: NetworkManager.trending) else {
+            completion(.failure(.invalidURL))
+            
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url){ data, response, error in
+            if let _ = error{
+                completion(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else{
+                completion(.failure(.invalidResponse))
+                return
+            }
+            
+            guard let data = data else{
+                completion(.failure(.invalidData))
+                return
+                
+            }
+            
+            do{
+                let decodedResponse = try JSONDecoder().decode(MovieDataModel.self, from: data)
+                completion(.success(decodedResponse.results))
+            }catch{
+                print("Debug: error \(error.localizedDescription)")
+                completion(.failure(.decodingError))
+            }
+        }.resume()
+    }
+
 }
 
 struct Constants {
