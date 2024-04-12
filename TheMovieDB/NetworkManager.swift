@@ -126,6 +126,38 @@ class NetworkManager: NSObject {
         }.resume()
     }
 
+    func getListOfTrailers(id: Int, completion: @escaping (Result<[Trailer], APError>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)/videos?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url){ data, response, error in
+            if let _ = error{
+                completion(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else{
+                completion(.failure(.invalidResponse))
+                return
+            }
+            
+            guard let data = data else{
+                completion(.failure(.invalidData))
+                return
+            }
+            
+            do{
+                let decodedResponse = try JSONDecoder().decode(TrailerResponse.self, from: data)
+                completion(.success(decodedResponse.results))
+            }catch{
+                print("Debug: error \(error.localizedDescription)")
+                completion(.failure(.decodingError))
+            }
+        }.resume()
+                
+    }
 }
 
 struct Constants {

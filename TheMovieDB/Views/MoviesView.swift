@@ -25,7 +25,7 @@ struct MoviesView: View {
                         LazyHGrid(rows: gridITemLayout, spacing: 20){
                             ForEach(viewModel.upcomingMovies, id: \.id){ movie in
                                 NavigationLink{
-                                    EmptyView()
+                                    MovieDetailView(movie: movie)
                                 }label:{
                                     KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
                                         .resizable()
@@ -46,7 +46,7 @@ struct MoviesView: View {
                              LazyHGrid(rows: gridITemLayout, spacing: 20){
                                  ForEach(viewModel.nowPlayingMovies, id: \.id){ movie in
                                      NavigationLink{
-                                         EmptyView()
+                                         MovieDetailView(movie: movie)
                                      }label:{
                                          KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
                                              .resizable()
@@ -68,11 +68,11 @@ struct MoviesView: View {
                              LazyHGrid(rows: gridITemLayout, spacing: 20){
                                  ForEach(viewModel.trendingMovies, id: \.id){ movie in
                                      NavigationLink{
-                                         EmptyView()
+                                         MovieDetailView(movie: movie)
                                      }label:{
                                          KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
                                              .resizable()
-                                             .placeholder{progress in
+                                             .placeholder{ progress in
                                                      ProgressView()
                                              }
                                              .cornerRadius(12)
