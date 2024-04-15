@@ -30,7 +30,7 @@ struct MoviesView: View {
                                     KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
                                         .resizable()
                                         .placeholder{progress in
-                                                ProgressView()
+                                            ProgressView()
                                         }
                                         .cornerRadius(12)
                                         .frame(width: 150, height: 200.05)
@@ -42,45 +42,45 @@ struct MoviesView: View {
                         .font(.title2)
                         .foregroundColor(.black)
                     
-                         ScrollView(.horizontal){
-                             LazyHGrid(rows: gridITemLayout, spacing: 20){
-                                 ForEach(viewModel.nowPlayingMovies, id: \.id){ movie in
-                                     NavigationLink{
-                                         MovieDetailView(movie: movie)
-                                     }label:{
-                                         KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
-                                             .resizable()
-                                             .placeholder{progress in
-                                                     ProgressView()
-                                             }
-                                             .cornerRadius(12)
-                                             .frame(width: 190, height: 255)
-                                     }
-                                 }
-                             }
-                         }
+                    ScrollView(.horizontal){
+                        LazyHGrid(rows: gridITemLayout, spacing: 20){
+                            ForEach(viewModel.nowPlayingMovies, id: \.id){ movie in
+                                NavigationLink{
+                                    MovieDetailView(movie: movie)
+                                }label:{
+                                    KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
+                                        .resizable()
+                                        .placeholder{progress in
+                                            ProgressView()
+                                        }
+                                        .cornerRadius(12)
+                                        .frame(width: 190, height: 255)
+                                }
+                            }
+                        }
+                    }
                     
                     Text("Tendencia")
                         .font(.title2)
                         .foregroundColor(.black)
                     
-                         ScrollView(.horizontal){
-                             LazyHGrid(rows: gridITemLayout, spacing: 20){
-                                 ForEach(viewModel.trendingMovies, id: \.id){ movie in
-                                     NavigationLink{
-                                         MovieDetailView(movie: movie)
-                                     }label:{
-                                         KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
-                                             .resizable()
-                                             .placeholder{ progress in
-                                                     ProgressView()
-                                             }
-                                             .cornerRadius(12)
-                                             .frame(width: 255, height: 340)
-                                     }
-                                 }
-                             }
-                         }
+                    ScrollView(.horizontal){
+                        LazyHGrid(rows: gridITemLayout, spacing: 20){
+                            ForEach(viewModel.trendingMovies, id: \.id){ movie in
+                                NavigationLink{
+                                    MovieDetailView(movie: movie)
+                                }label:{
+                                    KFImage(URL(string: "\(Constants.urlImages)\(movie.poster_path ?? Constants.placeholder)"))
+                                        .resizable()
+                                        .placeholder{ progress in
+                                            ProgressView()
+                                        }
+                                        .cornerRadius(12)
+                                        .frame(width: 255, height: 340)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
