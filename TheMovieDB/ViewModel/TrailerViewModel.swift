@@ -19,7 +19,7 @@ class TrailerViewModel: ObservableObject{
                 case .success(let trailers):
                     self.listOfTrailers = trailers
                 case .failure(let error):
-                    print("Error")
+                    print("Error: \(error)")
                 }
             }
         }
