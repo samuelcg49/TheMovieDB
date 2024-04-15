@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MessageUI
+import SafariServices
 
 struct FeedbackView: View {
     @AppStorage("isDarkModeOn") private var isDarkModeOn = false
@@ -134,6 +135,18 @@ struct FeedbackView: View {
                     }
                 }
             }
+            .navigationBarItems(trailing: Button(action: {
+                isShowingActivityView = true
+            }, label: {
+                Image(systemName: "square.and.arrow.up")
+            }))
+            .navigationBarTitle("Configuración", displayMode: .large)
+            .sheet(isPresented: $isShowingActivityView, content: {
+                ActivityView(activityItems: ["https://apps.apple.com/es/app/instagram/id389801252"])
+            })
+            .sheet(isPresented: $isShowingURL, content: {
+                safari(urlString: $urlToShow)
+            })
         }
     }
     func openWhatsApp(){
@@ -148,6 +161,20 @@ struct FeedbackView: View {
 #Preview {
     FeedbackView()
 }
+
+struct safari: UIViewControllerRepresentable{
+    @Binding var urlString: String
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<safari>) -> SFSafariViewController {
+        let controller = SFSafariViewController(url: URL(string: urlString)!)
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: UIViewControllerRepresentableContext<safari>) {
+    
+    }
+}
+
 extension FeedbackView{
     private class MessageDelegate: NSObject, MFMessageComposeViewControllerDelegate{
         func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
