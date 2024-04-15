@@ -16,6 +16,8 @@ struct MainTabView: View {
             SearchMoviesView()
                 .tabItem { Image(systemName: "magnifyingglass") }
             
+            FeedbackView()
+                .tabItem { Image(systemName: "gearshape") }
         }
     }
 }
