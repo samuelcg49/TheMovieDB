@@ -20,12 +20,12 @@ class NetworkManager: NSObject {
     static let shared = NetworkManager()
     private let cache = NSCache<NSString, UIImage>()
     
-    static let upcoming = "https://api.themoviedb.org/3/movie/upcoming?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES&page=1"
+    static let upcoming = "https://api.themoviedb.org/3/movie/upcoming?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES&page="
     static let nowPlaying = "https://api.themoviedb.org/3/movie/now_playing?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES&page=1"
     static let trending = "https://api.themoviedb.org/3/trending/movie/day?api_key=ac05133fedd9f8efa7c9dc3c714a9f75&language=es-ES"
     
-    func getListOfUpcomingMovies(completion: @escaping (Result<[DataMovie], APError>) -> Void)  {
-        guard let url = URL(string: NetworkManager.upcoming) else {
+    func getListOfUpcomingMovies(numPage: Int, completion: @escaping (Result<MovieDataModel, APError>) -> Void)  {
+        guard let url = URL(string: NetworkManager.upcoming+"\(numPage)") else {
             completion(.failure(.invalidURL))
             
             return
@@ -50,7 +50,7 @@ class NetworkManager: NSObject {
             
             do{
                 let decodedResponse = try JSONDecoder().decode(MovieDataModel.self, from: data)
-                completion(.success(decodedResponse.results))
+                completion(.success(decodedResponse))
             }catch{
                 print("Debug: error \(error.localizedDescription)")
                 completion(.failure(.decodingError))

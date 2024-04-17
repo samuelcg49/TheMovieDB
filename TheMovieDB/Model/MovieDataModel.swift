@@ -9,6 +9,7 @@ import Foundation
 
 struct MovieDataModel: Codable{
     let results: [DataMovie]
+    let total_pages: Int
     
 }
 

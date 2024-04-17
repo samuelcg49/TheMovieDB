@@ -34,6 +34,11 @@ struct MoviesView: View {
                                         }
                                         .cornerRadius(12)
                                         .frame(width: 150, height: 200.05)
+                                        .task{
+                                            if viewModel.hasReachedEnd(of: movie) && !viewModel.isFetching {
+                                                await viewModel.fetchNextSetOfMovies()
+                                            }
+                                        }
                                 }
                             }
                         }
